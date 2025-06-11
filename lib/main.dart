@@ -13,9 +13,27 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: Scaffold(
               appBar: AppBar(
-                title: const Text("Dashboard"),
-                actions: const [],
-              )
+                leading: FlutterLogo(),
+                title: const Text("Dashboard" , style: TextStyle(color: Colors.white, fontSize: 28)),
+                backgroundColor: Colors.blue,
+                centerTitle: false,
+                actions: [
+                  IconButton(
+                    onPressed: (){
+                      print("button di klik");
+                    }, 
+                    icon: Icon(
+                                  Icons.more_vert,
+                                  size: 24.0,
+                                ),
+                    )
+                ],
+              ),
+              body: Center(
+                child: Text("Hello World !", 
+                style: TextStyle(fontSize: 30),
+                ),
+              ),
             ),
     );
   }
