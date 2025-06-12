@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:project_flutter_bassic/widgets/listViewOval.dart';
+import 'widgets/widget_7.dart';
+import 'widgets/listViewRectangle.dart';
+import 'widgets/listViewOval.dart';
+import 'widgets/widget_main.dart';
 
-void main(){
+void main() {
   runApp(MyApp());
 }
 
@@ -11,30 +16,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Scaffold(
-              appBar: AppBar(
-                leading: FlutterLogo(),
-                title: const Text("Dashboard" , style: TextStyle(color: Colors.white, fontSize: 28)),
-                backgroundColor: Colors.blue,
-                centerTitle: false,
-                actions: [
-                  IconButton(
-                    onPressed: (){
-                      print("button di klik");
-                    }, 
-                    icon: Icon(
-                                  Icons.more_vert,
-                                  size: 24.0,
-                                ),
-                    )
-                ],
-              ),
-              body: Center(
-                child: Text("Hello World !", 
-                style: TextStyle(fontSize: 30),
-                ),
-              ),
-            ),
+      home: MainApp(),
     );
   }
 }
+
