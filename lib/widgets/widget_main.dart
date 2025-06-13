@@ -1,9 +1,89 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MainApp extends StatelessWidget {
   const MainApp({
     super.key,
   });
+
+  @override
+  Widget build(BuildContext context) {
+    return HomePage();
+  }
+}
+
+class HomePage extends StatefulWidget {
+  HomePage({
+    super.key,
+  });
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+   List<String> _daftarNama = [];
+  
+@override
+  void initState() {
+    super.initState();
+    _muatData(); 
+  }
+
+  Future<void> _muatData() async{
+    final prefe = await SharedPreferences.getInstance();
+    setState(() {
+    _daftarNama = prefe.getStringList("key_daftar_nama") ?? <String>[];
+    });
+  }
+
+  Future<void> _simpanData() async{
+    final prefe = await SharedPreferences.getInstance();
+    print("menyimpan data $_daftarNama");
+   await prefe.setStringList("key_daftar_nama", _daftarNama);
+  }
+
+
+  Future<void> _tampilkanDialogPostingsan() async {
+    final String? hasil = await showDialog<String>(
+        context: context,
+        builder: (context) {
+          final TextEditingController controller = TextEditingController();
+          return AlertDialog(
+            title: Text("Masukan nama"),
+            content: TextField(
+              controller: controller,
+              autofocus: true,
+              decoration: InputDecoration(hintText: "Nama "),
+            ),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text("Batal")),
+              TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(controller.text);
+                  },
+                  child: Text("Posting"))
+            ],
+          );
+        });
+
+    if (hasil != null && hasil.isNotEmpty) {
+      setState(() {
+        _daftarNama.add(hasil);
+        _simpanData();
+      });
+    }
+  }
+
+void prrint(){
+  for(String nam in _daftarNama){
+print(nam);
+  }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -25,9 +105,13 @@ class MainApp extends StatelessWidget {
               size: 24.0,
               color: Colors.white,
             ),
-            
           ),
-          IconButton(onPressed: (){}, icon: Icon(Icons.messenger_outline, color: Colors.white,))
+          IconButton(
+              onPressed: () {},
+              icon: Icon(
+                Icons.messenger_outline,
+                color: Colors.white,
+              ))
         ],
       ),
       body: Column(
@@ -36,23 +120,22 @@ class MainApp extends StatelessWidget {
             height: 130,
             color: const Color.fromARGB(255, 0, 0, 0),
             child: ListView.builder(
-              scrollDirection: Axis.horizontal,
+                scrollDirection: Axis.horizontal,
                 itemCount: 50,
                 itemBuilder: (BuildContext context, int index) => Row(
                       children: [
                         Container(
                           child: Column(
-                            
                             children: [
                               Stack(
                                 alignment: Alignment.center,
                                 children: [
                                   Container(
-                                    height: 90,
-                                    width: 90,
+                                    height: 70,
+                                    width: 70,
                                     decoration: BoxDecoration(
                                       border: Border.all(
-                                        width: 15,
+                                        width: 25,
                                         color: const Color.fromARGB(
                                             255, 38, 88, 128),
                                       ),
@@ -63,11 +146,11 @@ class MainApp extends StatelessWidget {
                                     ),
                                   ),
                                   Container(
-                                    width: 80,
-                                    height: 80,
+                                    width: 60,
+                                    height: 60,
                                     decoration: BoxDecoration(
                                         border: Border.all(
-                                          width: 5,
+                                          width: 2,
                                           color: const Color.fromARGB(
                                               255, 255, 255, 255),
                                         ),
@@ -85,17 +168,17 @@ class MainApp extends StatelessWidget {
                                 height: 1,
                               ),
                               Text(
-                                "name ${index + 1} " ,
+                                "nama ${index + 1}",
                                 style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                    fontStyle: FontStyle.italic,
-                                    color: Colors.white,
-                                    ),
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  fontStyle: FontStyle.italic,
+                                  color: Colors.white,
+                                ),
                               ),
                             ],
                           ),
-                        )
+                        ),
                       ],
                     )),
           ),
@@ -104,7 +187,7 @@ class MainApp extends StatelessWidget {
               color: Colors.black,
               child: ListView.builder(
                 padding: EdgeInsets.all(50),
-                itemCount: 50,
+                itemCount: _daftarNama.length,
                 itemBuilder: (BuildContext context, int index) => Padding(
                   padding: const EdgeInsets.only(bottom: 20),
                   child: Column(
@@ -113,39 +196,44 @@ class MainApp extends StatelessWidget {
                       Row(
                         children: [
                           Container(
-                                    width: 50,
-                                    height: 50,
-                                    decoration: BoxDecoration(
-                                        border: Border.all(
-                                          width: 5,
-                                          color: const Color.fromARGB(
-                                              255, 255, 255, 255),
-                                        ),
-                                        borderRadius:
-                                            BorderRadius.circular(250 / 2),
-                                        color: Colors.white,
-                                        image: DecorationImage(
-                                            fit: BoxFit.cover,
-                                            image: NetworkImage(
-                                                "https://picsum.photos/id/${777 + index}/200/300?grayscale&blur=2"))),
-                                  ),
-                                  SizedBox(width: 10,),
-                                     Text(
-                                              "Username ${index + 1}",
-                                              style: TextStyle(fontSize: 25 , color: Colors.white),
-                                            ),
-                                            
-                                    SizedBox(width: 70,),
-                                    IconButton(onPressed: (){}, icon: Icon(Icons.more_vert), color: Colors.white,)
+                            width: 40,
+                            height: 40,
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                  width: 5,
+                                  color:
+                                      const Color.fromARGB(255, 255, 255, 255),
+                                ),
+                                borderRadius: BorderRadius.circular(250 / 2),
+                                color: Colors.white,
+                                image: DecorationImage(
+                                    fit: BoxFit.cover,
+                                    image: NetworkImage(
+                                        "https://picsum.photos/id/${777 + index}/200/300?grayscale&blur=2"))),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            "${_daftarNama[index]}",
+                            style: TextStyle(fontSize: 25, color: Colors.white),
+                          ),
+                          SizedBox(
+                            width: 140,
+                          ),
+                          Spacer(),
+                            IconButton(
+                              onPressed: () {},
+                              icon: Icon(Icons.more_vert),
+                              color: Colors.white,
+                            ),
+                          
                         ],
                       ),
-                           
                       Container(
-                        
                         padding: EdgeInsets.all(5),
                         height: 300,
                         decoration: BoxDecoration(
-                         
                           borderRadius: BorderRadius.circular(20),
                           color: Colors.blue,
                           image: DecorationImage(
@@ -156,14 +244,49 @@ class MainApp extends StatelessWidget {
                           ),
                         ),
                       ),
-                      
+                           Favorite(),
                     ],
                   ),
                 ),
               ),
             ),
           ),
+          ElevatedButton(
+            onPressed: () {
+              prrint();
+              _tampilkanDialogPostingsan();
+            },
+            child: Icon(
+              Icons.add,
+              size: 24.0,
+            ),
+          )
         ],
+      ),
+    );
+  }
+}
+
+class Favorite extends StatefulWidget {
+  const Favorite({super.key});
+
+  @override
+  State<Favorite> createState() => _FavoriteState();
+}
+
+class _FavoriteState extends State<Favorite> {
+  bool _favorite = false;
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      trailing: IconButton(onPressed:(){
+        
+        setState(() {
+          // _favorite = true;
+          _favorite = !_favorite;
+        });
+      }, icon: Icon(Icons.favorite),
+      color: _favorite ? Colors.red : Colors.grey, 
       ),
     );
   }
