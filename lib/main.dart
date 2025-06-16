@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'widgets/widget_main.dart';
+// import 'widgets/widget_dashboard.dart';
+import 'widgets/user_account/user_acc.dart';
 
 void main() {
   runApp(MyApp());
@@ -12,7 +13,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: MainApp(),
+      home: UserAcc(),
     );
   }
 }
