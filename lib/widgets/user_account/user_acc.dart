@@ -189,37 +189,7 @@ class _UserAccState extends State<UserAcc> {
           ),
         ],
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex, 
-        unselectedItemColor: Colors.grey,
-        selectedItemColor: Colors.black,
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
-        onTap: (int index){
-          setState(() {
-            _selectedIndex = index;
-          });
-        },
-        items: [
-        BottomNavigationBarItem(icon: Icon(Icons.home),
-        label: "Home",
-        ),
-        BottomNavigationBarItem(icon: Icon(Icons.search),
-        label: "search",
-        ),
-        BottomNavigationBarItem(icon: Icon(Icons.add),
-        label: "Post",
-        ),
-        BottomNavigationBarItem(icon: Icon(Icons.video_collection_outlined),
-        label: "Reels",
-        ),
-        BottomNavigationBarItem(icon: Icon(Icons.person),
-        label: "Account",
-        ),
-      ],
-    ),
-    
-  
+      
     );
   }
 }

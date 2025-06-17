@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:project_flutter_bassic/post_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '/post_provider.dart';
 
-class MainApp extends StatelessWidget {
-  const MainApp({
+
+class DashboardPage extends StatelessWidget {
+  const DashboardPage({
     super.key,
   });
 
@@ -24,60 +28,8 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
    List<String> _daftarNama = [];
   
-@override
-  void initState() {
-    super.initState();
-    _muatData(); 
-  }
 
-  Future<void> _muatData() async{
-    final prefe = await SharedPreferences.getInstance();
-    setState(() {
-    _daftarNama = prefe.getStringList("key_daftar_nama") ?? <String>[];
-    });
-  }
-
-  Future<void> _simpanData() async{
-    final prefe = await SharedPreferences.getInstance();
-    print("menyimpan data $_daftarNama");
-   await prefe.setStringList("key_daftar_nama", _daftarNama);
-  }
-
-
-  Future<void> _tampilkanDialogPostingsan() async {
-    final String? hasil = await showDialog<String>(
-        context: context,
-        builder: (context) {
-          final TextEditingController controller = TextEditingController();
-          return AlertDialog(
-            title: Text("Masukan nama"),
-            content: TextField(
-              controller: controller,
-              autofocus: true,
-              decoration: InputDecoration(hintText: "Nama "),
-            ),
-            actions: [
-              TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text("Batal")),
-              TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop(controller.text);
-                  },
-                  child: Text("Posting"))
-            ],
-          );
-        });
-
-    if (hasil != null && hasil.isNotEmpty) {
-      setState(() {
-        _daftarNama.add(hasil);
-        _simpanData();
-      });
-    }
-  }
+  
 
 void prrint(){
   for(String nam in _daftarNama){
@@ -87,6 +39,7 @@ print(nam);
 
   @override
   Widget build(BuildContext context) {
+    final postProvider = context.watch<PostProvider>();
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -117,30 +70,27 @@ print(nam);
       body: Column(
         children: [
           story_oval(),
-          postingan(daftarNama: _daftarNama),
-          ElevatedButton(
-            onPressed: () {
-              prrint();
-              _tampilkanDialogPostingsan();
-            },
-            child: Icon(
-              Icons.add,
-              size: 24.0,
-            ),
-          )
+          Postingan(daftarPost: postProvider.daftarPost),
+          // ElevatedButton(
+          //   onPressed: () {
+          //     prrint();
+          //     _tampilkanDialogPostingsan();
+          //   },
+          //   child: Icon(
+          //     Icons.add,
+          //     size: 24.0,
+          //   ),
+          // ),
+        
         ],
       ),
     );
   }
 }
 
-class postingan extends StatelessWidget {
-  const postingan({
-    super.key,
-    required List<String> daftarNama,
-  }) : _daftarNama = daftarNama;
-
-  final List<String> _daftarNama;
+class Postingan extends StatelessWidget {
+  final List<String> daftarPost;
+  const Postingan({required this.daftarPost});
 
   @override
   Widget build(BuildContext context) {
@@ -149,7 +99,7 @@ class postingan extends StatelessWidget {
         color: Colors.black,
         child: ListView.builder(
           padding: EdgeInsets.all(50),
-          itemCount: _daftarNama.length,
+          itemCount: daftarPost.length,
           itemBuilder: (BuildContext context, int index) => Padding(
             padding: const EdgeInsets.only(bottom: 20),
             child: Column(
@@ -180,7 +130,7 @@ class postingan extends StatelessWidget {
                       width: 1,
                     ),
                     Text(
-                      "${_daftarNama[index]}",
+                      "${daftarPost[index]}",
                       style: TextStyle(fontSize: 15, color: Colors.white),
                     ),
                     SizedBox(
