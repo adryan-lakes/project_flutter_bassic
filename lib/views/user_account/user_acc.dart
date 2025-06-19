@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:project_flutter_bassic/widgets/user_account/profile_picture.dart';
-import 'package:project_flutter_bassic/widgets/user_account/profile_item.dart';
-import 'package:project_flutter_bassic/widgets/user_account/tab_item.dart';
-import 'package:project_flutter_bassic/widgets/user_account/highlight.dart';
+import 'package:project_flutter_bassic/views/user_account/profile_picture.dart';
+import 'package:project_flutter_bassic/views/user_account/profile_item.dart';
+import 'package:project_flutter_bassic/views/user_account/tab_item.dart';
+import 'package:project_flutter_bassic/views/user_account/highlight.dart';
 
 class UserAcc extends StatefulWidget {
   const UserAcc({super.key});
@@ -19,6 +19,7 @@ class _UserAccState extends State<UserAcc> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        
         title: Row(
           children: [
             Text(
