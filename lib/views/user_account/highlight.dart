@@ -76,7 +76,7 @@ class HighLight extends StatelessWidget {
                     ),
                     image: DecorationImage(
                         image: NetworkImage(
-                            "https://picsum.photos/seed/picsum/200/300"),
+                            "https://picsum.photos/id/800/600/800"),
                         fit: BoxFit.cover)),
               ),
             ],

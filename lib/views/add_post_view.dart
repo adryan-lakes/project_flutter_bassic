@@ -5,9 +5,6 @@ import 'package:project_flutter_bassic/views/dashboard_view.dart';
 import 'package:project_flutter_bassic/controllers/post_provider.dart';
 import 'package:provider/provider.dart';
 
-void main() {
-  runApp(AddPost());
-}
 
 class AddPost extends StatefulWidget {
   const AddPost({super.key});
@@ -17,7 +14,7 @@ class AddPost extends StatefulWidget {
 }
 
 class _AddPost extends State<AddPost> {
-
+  final _keyForm = GlobalKey<FormState>();
   final _namaConttroler = TextEditingController();
   final _captionsConttroler = TextEditingController();
 
@@ -49,52 +46,77 @@ void _kirimPost(){
         title:  Text("New post"),
          
         actions:  [
-          ElevatedButton(onPressed: _kirimPost, child: Text("Post"))
+          ElevatedButton(onPressed: (){
+            if(_keyForm.currentState!.validate()){
+             
+            _kirimPost();  
+                    
+            }
+            
+          }, child: Text("Post"))
         ],
       ),
       body: Padding(padding: EdgeInsets.all(10), 
-      child: Column(
-        children: [
-          Container(
-                  padding: const EdgeInsets.all(12),
-                  margin: const EdgeInsets.only(),
-                  child: TextFormField(
-                    controller: _namaConttroler,
-                    decoration: const InputDecoration(
-                      labelText: 'Name',
-                      labelStyle: TextStyle(
-                        color: Colors.blueGrey,
-                      ),
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(
+      child: Form(
+        key: _keyForm,
+        child: Column(
+          children: [
+            Container(
+                    padding: const EdgeInsets.all(12),
+                    margin: const EdgeInsets.only(),
+                    child: TextFormField(
+                      controller: _namaConttroler,
+                      decoration: const InputDecoration(
+                        labelText: 'Name',
+                        labelStyle: TextStyle(
                           color: Colors.blueGrey,
                         ),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                            color: Colors.blueGrey,
+                          ),
+                        ),
+                        helperText: "masukan nama",
                       ),
-                      helperText: "masukan nama",
+                      validator: (String? value) {
+   
+                          if (value == null || value.isEmpty) {
+     
+                          return 'Nama tidak boleh kosong!';
+                         }
+    
+                     return null;
+                      },
                     ),
                   ),
-                ),
-                SizedBox(height: 20,),
-
-                Container(
-                        padding: const EdgeInsets.all(12),
-                        margin: const EdgeInsets.only(),
-                        child: TextFormField(
-                          controller: _captionsConttroler,
-                          decoration: const InputDecoration(
-                            labelText: 'Captions',
-                            labelStyle: TextStyle(
-                              color: Colors.blueGrey,
-                            ),
-                            enabledBorder: OutlineInputBorder(
+                  SizedBox(height: 20,),
+        
+                  Container(
+                          padding: const EdgeInsets.all(12),
+                          margin: const EdgeInsets.only(),
+                          child: TextFormField(
+                            controller: _captionsConttroler,
+                            decoration: const InputDecoration(
+                              labelText: 'Captions',
+                              labelStyle: TextStyle(
+                                color: Colors.blueGrey,
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                
+                              ),
                               
                             ),
-                            
+                            validator: (String? value) {
+                        if (value == null || value.isEmpty) {
+                      return 'Caption tidak boleh kosong!';
+                           }
+                            return null;
+  },
+                            onChanged: (value) {},
                           ),
-                          onChanged: (value) {},
                         ),
-                      ),
-        ],
+          ],
+        ),
       ),
       )
     );
